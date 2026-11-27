@@ -257,9 +257,7 @@ h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)
  <div class="f"><input id="d3" type="text" placeholder=" "><label for="d3">Operador(a) apilador</label></div>
  <div class="f"><input id="d3r" type="text" placeholder=" "><label for="d3r">RUT operador(a)</label></div>
  <div class="f"><input id="d4" type="text" placeholder=" "><label for="d4">N° apilador eléctrico</label></div>
- <div class="f"><input id="d5" type="text" placeholder=" "><label for="d5">Bodeguero(a) observado(a)</label></div>
- <div class="f"><input id="d5r" type="text" placeholder=" "><label for="d5r">RUT bodeguero(a)</label></div>
- <div class="f"><input id="d6" type="text" placeholder=" " data-req="Verificado por"><label for="d6">Verificado por</label></div>
+
  <div class="tareas" id="tareas" role="group" aria-label="Tarea observada">
   <label><input type="checkbox"><span>Descenso de pallet<small>7.5.3 p.1</small></span></label>
   <label><input type="checkbox"><span>Picking<small>7.5.3 p.2</small></span></label>
@@ -485,10 +483,10 @@ h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)
 
 <h2 class="reveal">Firmas</h2>
 <section class="firmas reveal">
- <div class="firma"><div class="f"><input id="s1" placeholder=" "><label for="s1">Nombre</label></div><div class="pad" data-k="0"><canvas></canvas><span class="ph">Firme aquí</span><button type=button>borrar</button></div><small>Persona trabajadora / operador(a)</small></div>
- <div class="firma"><div class="f"><input id="s2" placeholder=" "><label for="s2">Nombre</label></div><div class="pad" data-k="1"><canvas></canvas><span class="ph">Firme aquí</span><button type=button>borrar</button></div><small>Responsable de la verificación</small></div>
- <div class="firma"><div class="f"><input id="s3" placeholder=" "><label for="s3">Nombre</label></div><div class="pad" data-k="2"><canvas></canvas><span class="ph">Firme aquí</span><button type=button>borrar</button></div><small>Supervisor(a) de turno / jefatura BMP</small></div>
- <div class="firma"><div class="f"><input id="s4" placeholder=" "><label for="s4">Nombre</label></div><div class="pad" data-k="3"><canvas></canvas><span class="ph">Firme aquí</span><button type=button>borrar</button></div><small>Prevención de Riesgos</small></div>
+ <div class="firma"><div class="f"><input id="s1" placeholder=" "><label for="s1">Nombre</label></div><div class="pad" data-k="0"><canvas></canvas><span class="ph">Firma opcional en pantalla · o firmar en el impreso</span><button type=button>borrar</button></div><small>Persona trabajadora / operador(a)</small></div>
+ <div class="firma"><div class="f"><input id="s2" placeholder=" "><label for="s2">Nombre</label></div><div class="pad" data-k="1"><canvas></canvas><span class="ph">Firma opcional en pantalla · o firmar en el impreso</span><button type=button>borrar</button></div><small>Responsable de la verificación</small></div>
+ <div class="firma"><div class="f"><input id="s3" placeholder=" "><label for="s3">Nombre</label></div><div class="pad" data-k="2"><canvas></canvas><span class="ph">Firma opcional en pantalla · o firmar en el impreso</span><button type=button>borrar</button></div><small>Supervisor(a) de turno / jefatura BMP</small></div>
+ <div class="firma"><div class="f"><input id="s4" placeholder=" "><label for="s4">Nombre</label></div><div class="pad" data-k="3"><canvas></canvas><span class="ph">Firma opcional en pantalla · o firmar en el impreso</span><button type=button>borrar</button></div><small>Prevención de Riesgos</small></div>
 </section>
 <p class="nota-firma reveal">La firma de la persona trabajadora indica que toma conocimiento del resultado de la verificación.</p>
 
@@ -596,8 +594,6 @@ h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)
    if(!v)f.push(['Ítem '+(i+1)+' sin evaluar',it]);
    else if(v==='NC'&&!it.querySelector('textarea').value.trim())f.push(['Ítem '+(i+1)+': describir acción, responsable y plazo',it]);});
   if(calc().aNC){[['hd','Hora de detención'],['inf','Informado a'],['hr','Hora de reanudación'],['vr','Corrección verificada por']].forEach(([id,n])=>{if(!$(id).value.trim()){f.push([n+' (sección A con NC)',$(id)]);$(id).parentElement.classList.add('err');}});}
-  if(!$('s2').value.trim())f.push(['Nombre del responsable de la verificación',$('s2')]);
-  if(!pads[1].get())f.push(['Firma del responsable de la verificación',$('s2')]);
   const box=$('faltan');
   if(!f.length){box.classList.remove('ver');return true;}
   box.innerHTML='<b>Faltan '+f.length+' datos para dejar constancia:</b><ul>'+f.slice(0,8).map((x,i)=>'<li><a href="#" data-i="'+i+'">'+x[0]+'</a></li>').join('')+(f.length>8?'<li>y '+(f.length-8)+' más…</li>':'')+'</ul>';
@@ -615,8 +611,8 @@ h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)
  $('csv').onclick=()=>{if(!validar())return;cerrar();const r=calc();
   const q=s=>'"'+String(s==null?'':s).replace(/"/g,'""').replace(/\r?\n/g,' ')+'"';
   const tareas=[...document.querySelectorAll('#tareas label')].filter(l=>l.querySelector('input').checked).map(l=>l.querySelector('span').firstChild.textContent).join(' / ');
-  const h=['ID','Fecha','Turno','Bodega/planta','Pasillo/rack/nivel','Operador','RUT operador','N° apilador','Bodeguero','RUT bodeguero','Verificado por','Tarea observada','Hora inicio','Hora término'];
-  const v=[meta.id,$('fecha').value,$('turno').value,$('planta').value,$('d2').value,$('d3').value,$('d3r').value,$('d4').value,$('d5').value,$('d5r').value,$('d6').value,tareas,meta.ini,meta.fin];
+  const h=['ID','Fecha','Turno','Bodega/planta','Pasillo/rack/nivel','Operador','RUT operador','N° apilador','Tarea observada','Hora inicio','Hora término'];
+  const v=[meta.id,$('fecha').value,$('turno').value,$('planta').value,$('d2').value,$('d3').value,$('d3r').value,$('d4').value,tareas,meta.ini,meta.fin];
   items.forEach((it,i)=>{h.push('Ítem '+(i+1),'Obs '+(i+1));v.push(val(it)==='NA'?'N/A':val(it),it.querySelector('textarea').value);});
   [['Evid. ítem 10',10],['Evid. ítem 17',17],['Evid. ítem 18',18]].forEach(([n,k])=>{h.push(n);v.push(($('r'+k).querySelector('.ev input')||{}).value||'');});
   h.push('Aplicables','C','NC','N/A','% cumplimiento','Sección A','Hora detención','Informado a','Hora reanudación','Corrección verificada por','Otra observación','Firmas registradas');
